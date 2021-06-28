@@ -1,1 +1,1 @@
-# dogs-graphql
+# Dogs - GraphQL Demo
