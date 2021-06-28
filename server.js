@@ -157,7 +157,8 @@ app.use('/graphql', graphqlHTTP({
 
 // get route -> index
 app.get("/", (req, res) => {
-  axios.get('http://localhost:8080/graphql?query={pets{name,breed,img}}')
+  const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}graphql?query={pets{name,breed,img}}`;
+  axios.get(fullUrl)
   .then(function (response) {
     // handle success
     const data = response.data.data.pets;
