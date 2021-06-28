@@ -9,6 +9,7 @@ const axios = require('axios');
 
 const app = express();
 
+// GraphQL schema for the data
 var schema = buildSchema(`
   type Query {
     user(id: Int!): Owner
@@ -113,7 +114,7 @@ var getUser = function (args) {
   return owners.filter(owner => owner.id == userID)[0];
 }
 
-// Return a list of users (takes an optional shark parameter)
+// Return a list of users (takes an optional first_name parameter)
 var retrieveUsers = function (args) {
   if (args.first_name) {
     var first_name = args.first_name;
@@ -123,7 +124,7 @@ var retrieveUsers = function (args) {
   }
 }
 
-// Return a list of users (takes an optional shark parameter)
+// Return a list of pets (takes an optional name parameter)
 var retrievePets = function (args) {
   if (args.name) {
     var name = args.name;
@@ -159,13 +160,14 @@ app.use('/graphql', graphqlHTTP({
 app.get("/", (req, res) => {
   const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}graphql?query={pets{name,breed,img}}`;
   axios.get(fullUrl)
-  .then(function (response) {
-    // handle success
-    const data = response.data.data.pets;
-    res.render("index", { data: data  });
-  })
-  
+    .then(function (response) {
+      // handle success
+      const data = response.data.data.pets;
+      res.render("index", { data: data });
+    })
+
 });
+
 app.listen(PORT, () => {
   console.log('Listening on port:%s', PORT);
 });
