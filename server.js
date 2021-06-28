@@ -12,8 +12,8 @@ const app = express();
 // GraphQL schema for the data
 var schema = buildSchema(`
   type Query {
-    user(id: Int!): Owner
-    users(first_name: String): [Owner]
+    owner(id: Int!): Owner
+    owners(first_name: String): [Owner]
     pets(name: String): [Pet]
   },
   type Owner {
@@ -29,7 +29,11 @@ var schema = buildSchema(`
     color: String
     size: String
     img: String
-    owner_id: Owner!
+    owner: Owner!
+  }
+  type Mutation {
+    updateOwner(id: Int!, first_name: String!, last_name: String!): Owner
+    updatePet(id: Int!, name: String!, breed: String!, color: String!, size: String!, img: String!): Pet
   }
 `);
 
@@ -134,11 +138,40 @@ var retrievePets = function (args) {
   }
 }
 
+// Update a user and return new user details
+var updateOwner = function({id, first_name, last_name}) {
+  owners.map(owner => {
+    if (owner.id === id) {
+      owner.first_name = first_name;
+      owner.last_name = last_name;
+      return owner;
+    }
+  });
+  return owners.filter(owner => owner.id === id)[0];
+}
+
+// Update a pet and return new pet details
+var updatePet = function({id, name, breed, color, size, img}) {
+  pets.map(pet => {
+    if (pet.id === id) {
+      pet.name = name;
+      pet.breed = breed;
+      pet.color = color;
+      pet.size = size;
+      pet.img = img;
+      return pet;
+    }
+  });
+  return pets.filter(pet => pet.id === id)[0];
+}
+
 // Root resolver
 var root = {
-  user: getUser,
-  users: retrieveUsers,
-  pets: retrievePets
+  owner: getUser,
+  owners: retrieveUsers,
+  pets: retrievePets,
+  updateOwner: updateOwner,
+  updatePet: updatePet 
 };
 
 // Parse application body
