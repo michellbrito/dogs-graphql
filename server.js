@@ -139,7 +139,7 @@ var retrievePets = function (args) {
 }
 
 // Update a user and return new user details
-var updateOwner = function({id, first_name, last_name}) {
+var updateOwner = function ({ id, first_name, last_name }) {
   owners.map(owner => {
     if (owner.id === id) {
       owner.first_name = first_name;
@@ -151,7 +151,7 @@ var updateOwner = function({id, first_name, last_name}) {
 }
 
 // Update a pet and return new pet details
-var updatePet = function({id, name, breed, color, size, img}) {
+var updatePet = function ({ id, name, breed, color, size, img }) {
   pets.map(pet => {
     if (pet.id === id) {
       pet.name = name;
@@ -171,7 +171,7 @@ var root = {
   owners: retrieveUsers,
   pets: retrievePets,
   updateOwner: updateOwner,
-  updatePet: updatePet 
+  updatePet: updatePet
 };
 
 // Parse application body
